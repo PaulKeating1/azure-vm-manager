@@ -1,9 +1,10 @@
 ﻿using AzureVmManager.DataObjects;
+using AzureVmManager.Services.Interfaces;
 using Elector8EnvironmentManager.Services.Interfaces;
 
 namespace AzureVmManager.Services.Implementations
 {
-    public class GetSubscriptionsService
+    public class GetSubscriptionsService : IGetSubscriptionsService
     {
         private IArmClientFactory _armClientFactory;
 
