@@ -3,7 +3,7 @@ using AzureVmManager.Services.Interfaces;
 
 namespace AzureVmManager.Services.Implementations
 {
-    public class GetResourceGroupsService
+    public class GetResourceGroupsService : IGetResourceGroupsService
     {
         private readonly IGetSubscriptionResourceService _getSubscriptionResourceService;
 
