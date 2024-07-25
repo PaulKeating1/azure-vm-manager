@@ -5,11 +5,11 @@ using Elector8EnvironmentManager.Services.Interfaces;
 
 namespace AzureVmManager.Services.Implementations
 {
-    public class GetImageService : IGetImageService
+    public class GetImagesService : IGetImagesService
     {
         private readonly IArmClientFactory _armClientFactory;
 
-        public GetImageService(
+        public GetImagesService(
             IArmClientFactory armClientFactory)
         {
             _armClientFactory = armClientFactory;

@@ -2,7 +2,7 @@
 
 namespace AzureVmManager.Services.Interfaces
 {
-    public interface IGetImageService
+    public interface IGetImagesService
     {
         IEnumerable<Image> GetImages(
             string subscriptionId,

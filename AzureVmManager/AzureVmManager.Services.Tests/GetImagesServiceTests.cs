@@ -10,7 +10,7 @@ using Moq;
 
 namespace AzureVmManager.Services.Tests
 {
-    internal class GetImageServiceTests
+    internal class GetImagesServiceTests
     {
         [Test]
         public void Should_GetImages()
@@ -39,7 +39,7 @@ namespace AzureVmManager.Services.Tests
             clientMock.Setup(c => c.GetCachedClient(It.IsAny<Func<ArmClient, MockableComputeArmClient>>())).Returns(clientExtensionMock.Object);
             clientFactoryMock.Setup(x => x.CreateClient()).Returns(clientMock.Object);
 
-            var getImageService = new GetImageService(clientFactoryMock.Object);
+            var getImageService = new GetImagesService(clientFactoryMock.Object);
 
             // Act
             var images = getImageService.GetImages(subscriptionId, resourceGroupName, galleryName);
