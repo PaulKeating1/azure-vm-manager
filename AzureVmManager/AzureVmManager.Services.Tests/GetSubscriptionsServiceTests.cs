@@ -17,8 +17,7 @@ namespace AzureVmManager.Services.Tests
         {
             // Arrange
             var testSubscriptions = Enumerable.Range(0, numberOfSubscriptions).Select(x =>
-            {
-                
+            {                
                 var mockSubscriptionResource = new Mock<SubscriptionResource>();                
                 mockSubscriptionResource.Setup(x => x.Data).Returns(ResourceManagerModelFactory.SubscriptionData(subscriptionId: Guid.NewGuid().ToString(), displayName: "Test subscription"));
                 return mockSubscriptionResource;

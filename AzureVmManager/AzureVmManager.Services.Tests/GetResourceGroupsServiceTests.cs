@@ -1,11 +1,8 @@
 ﻿using Azure.ResourceManager.Models;
 using Azure.ResourceManager.Resources;
-using Azure.ResourceManager;
 using AzureVmManager.Services.Implementations;
-using Elector8EnvironmentManager.Services.Interfaces;
 using Moq;
 using AzureVmManager.Services.Interfaces;
-using AzureVmManager.DataObjects;
 using FluentAssertions;
 
 namespace AzureVmManager.Services.Tests
@@ -21,7 +18,6 @@ namespace AzureVmManager.Services.Tests
             var subscriptionId = Guid.NewGuid().ToString();
             var testResourceGroups = Enumerable.Range(0, numberOfResourceGroups).Select(x =>
             {
-
                 var mockResourceGroupResource = new Mock<ResourceGroupResource>();
                 var resourceIdentifier = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, "test-resource-group");
                 mockResourceGroupResource.Setup(x => x.Data).Returns(ResourceManagerModelFactory.ResourceGroupData(resourceIdentifier));
