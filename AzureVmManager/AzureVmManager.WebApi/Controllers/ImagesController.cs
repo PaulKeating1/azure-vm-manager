@@ -15,6 +15,7 @@ namespace AzureVmManager.WebApi.Controllers
             _getImagesService = getImagesService;
         }
 
+        [HttpGet]
         public IEnumerable<Image> Get(string subscriptionId, string resourceGroupName, string galleryName)
         {
             var images = _getImagesService.GetImages(subscriptionId, resourceGroupName, galleryName);
