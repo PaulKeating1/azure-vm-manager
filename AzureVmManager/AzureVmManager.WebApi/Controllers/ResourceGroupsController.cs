@@ -9,10 +9,14 @@ namespace AzureVmManager.WebApi.Controllers
     public class ResourceGroupsController : ControllerBase
     {
         private IGetResourceGroupsService _getResourceGroupsService;
+        private readonly ICreateResourceGroupService _createResourceGroupService;
 
-        public ResourceGroupsController(IGetResourceGroupsService getResourceGroupsService)
+        public ResourceGroupsController(
+            IGetResourceGroupsService getResourceGroupsService, 
+            ICreateResourceGroupService createResourceGroupService)
         {
             _getResourceGroupsService = getResourceGroupsService;
+            _createResourceGroupService = createResourceGroupService;
         }
 
         [HttpGet]
@@ -20,6 +24,13 @@ namespace AzureVmManager.WebApi.Controllers
         {
             var resourceGroups = _getResourceGroupsService.GetResourceGroups(subscriptionId);
             return resourceGroups;
+        }
+
+        [HttpPut]
+        public async Task<ResourceGroup> Create(string subscriptionId, string location, string resourceGroupName)
+        {
+            var resourceGroup = await _createResourceGroupService.Create(subscriptionId, location, resourceGroupName);
+            return resourceGroup;
         }
     }
 }
