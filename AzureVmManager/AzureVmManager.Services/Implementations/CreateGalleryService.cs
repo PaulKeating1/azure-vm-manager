@@ -16,7 +16,7 @@ namespace AzureVmManager.Services.Implementations
 
         public async Task<Gallery> Create(string resourceGroupResourceId, string galleryName)
         {
-            var resourceGroupResource = _getResourceGroupResourceService.Get(resourceGroupResourceId);
+            var resourceGroupResource = await _getResourceGroupResourceService.Get(resourceGroupResourceId);
             var galleriesCollection = resourceGroupResource.GetGalleries();
             var armOperation = await galleriesCollection.CreateOrUpdateAsync(WaitUntil.Completed, galleryName, new GalleryData(resourceGroupResource.Data.Location));
             var gallery = new Gallery

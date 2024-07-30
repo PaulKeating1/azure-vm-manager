@@ -1,5 +1,4 @@
 ﻿using Azure;
-using Azure.Core;
 using Azure.ResourceManager;
 using Azure.ResourceManager.Compute;
 using Azure.ResourceManager.Compute.Mocking;
@@ -30,7 +29,7 @@ namespace AzureVmManager.Services.Tests
 
             resourceGroupResourceMock.Setup(rg => rg.GetCachedClient(It.IsAny<Func<ArmClient, MockableComputeResourceGroupResource>>())).Returns(resourceGroupResourceExtensionMock.Object);
             var getResourceGroupResourceServiceMock = new Mock<IGetResourceGroupResourceService>();
-            getResourceGroupResourceServiceMock.Setup(x => x.Get(resourceGroupResourceId.ToString())).Returns(resourceGroupResourceMock.Object);
+            getResourceGroupResourceServiceMock.Setup(x => x.Get(resourceGroupResourceId.ToString())).ReturnsAsync(resourceGroupResourceMock.Object);
 
             var galleryCollectionMock = new Mock<GalleryCollection>();
             var armOperationMock = new Mock<ArmOperation<GalleryResource>>();
