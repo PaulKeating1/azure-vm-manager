@@ -4,6 +4,6 @@ namespace AzureVmManager.Services.Interfaces
 {
     public interface IGetResourceGroupResourceService
     {
-        ResourceGroupResource Get(string resourceGroupResourceId);
+        Task<ResourceGroupResource> Get(string resourceGroupResourceId);
     }
 }
