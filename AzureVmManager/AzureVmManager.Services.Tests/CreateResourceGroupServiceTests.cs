@@ -37,7 +37,8 @@ namespace AzureVmManager.Services.Tests
                     x.CreateOrUpdateAsync(
                         WaitUntil.Completed, 
                         resourceGroupName, 
-                        It.Is<ResourceGroupData>(x => x.Location == location), CancellationToken.None))
+                        It.Is<ResourceGroupData>(x => x.Location == location), 
+                        CancellationToken.None))
                 .ReturnsAsync(armOperationMock.Object);
 
             var createResourceGroupService = new CreateResourceGroupService(getSubscriptionResourceServiceMock.Object);
