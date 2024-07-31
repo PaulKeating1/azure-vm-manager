@@ -1,0 +1,24 @@
+.site-header {
+    background-color: #0080ff; 
+    border-top-left-radius: 0.5rem; 
+    border-top-right-radius: 0.5rem; 
+    text-align: center; 
+    padding-top: 1rem; 
+    font-size: 4em; 
+    color: white; 
+    font-weight: bold;
+}
+
+.site-header-menu {
+    background-color: #0080ff; 
+    font-size: 1.25em; 
+    padding: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.site-header-menu-item {
+    text-decoration: none; 
+    color: white; 
+    margin-right: 1em;
+}

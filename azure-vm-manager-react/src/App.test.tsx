@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-jest.mock('./SiteHeader', () => {
+jest.mock('./components/SiteHeader', () => {
   const SiteHeader = () => <div data-testid="SiteHeader">SiteHeader</div>;
   return SiteHeader;
 });
