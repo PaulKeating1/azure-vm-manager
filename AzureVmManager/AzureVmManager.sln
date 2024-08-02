@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureVmManager.Services.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureVmManager.DataObjects", "AzureVmManager.DataObjects\AzureVmManager.DataObjects.csproj", "{A007C90D-DD40-49B2-BE8E-BAF6EFC3464F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureVmManager.WebApi", "AzureVmManager.WebApi\AzureVmManager.WebApi.csproj", "{39BFFF41-4882-427F-8332-CB207EE36BB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureVmManager.WebApi", "AzureVmManager.WebApi\AzureVmManager.WebApi.csproj", "{39BFFF41-4882-427F-8332-CB207EE36BB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureVmManager.WebApi.Tests", "AzureVmManager.WebApi.Tests\AzureVmManager.WebApi.Tests.csproj", "{47514D85-E88C-4993-AE9D-CEDDBC4B183F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureVmManager.WebApi.Tests", "AzureVmManager.WebApi.Tests\AzureVmManager.WebApi.Tests.csproj", "{47514D85-E88C-4993-AE9D-CEDDBC4B183F}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "azurevmmanager.react", "AzureVmManager.React\azurevmmanager.react.esproj", "{BE899128-C8CC-429F-98EC-63C983338DE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,12 @@ Global
 		{47514D85-E88C-4993-AE9D-CEDDBC4B183F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47514D85-E88C-4993-AE9D-CEDDBC4B183F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47514D85-E88C-4993-AE9D-CEDDBC4B183F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE899128-C8CC-429F-98EC-63C983338DE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE899128-C8CC-429F-98EC-63C983338DE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE899128-C8CC-429F-98EC-63C983338DE4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BE899128-C8CC-429F-98EC-63C983338DE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE899128-C8CC-429F-98EC-63C983338DE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE899128-C8CC-429F-98EC-63C983338DE4}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
