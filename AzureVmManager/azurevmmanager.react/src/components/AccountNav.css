@@ -1,0 +1,12 @@
+.account-menu {
+    background-color: #004589;
+    font-size: 1.25em;
+    display: flex;
+    flex-direction: column;
+}
+
+.account-menu-item {
+    text-decoration: none;
+    color: white;
+    padding: 1rem;
+}
