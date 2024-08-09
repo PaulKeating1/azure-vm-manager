@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AzureVmManager.WebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class SubscriptionsController : ControllerBase
+    public class SubscriptionsController : BaseController
     {
         private IGetSubscriptionsService _getSubscriptionsService;
 

@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AzureVmManager.WebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class ResourceGroupsController : ControllerBase
+    public class ResourceGroupsController : BaseController
     {
         private IGetResourceGroupsService _getResourceGroupsService;
         private readonly ICreateResourceGroupService _createResourceGroupService;

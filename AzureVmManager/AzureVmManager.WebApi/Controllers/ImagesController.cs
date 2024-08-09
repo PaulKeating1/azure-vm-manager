@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AzureVmManager.WebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class ImagesController : ControllerBase
+    public class ImagesController : BaseController
     {
         private IGetImagesService _getImagesService;
 

@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AzureVmManager.WebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class GalleriesController : ControllerBase
+    public class GalleriesController : BaseController
     {
         private ICreateGalleryService _createGalleryService;
 
