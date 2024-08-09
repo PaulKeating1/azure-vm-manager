@@ -23,11 +23,11 @@ function App({ pca }: AppProps) {
             <div className="App">
                 <Router>
                     <SiteHeader />
-                    <div className="main-content">
+                    <div className="main-layout">
                         <AuthenticatedTemplate>
                             <AccountNav />
                         </AuthenticatedTemplate>        
-                        <main>
+                        <main className="main-content">
                             <Routes>
                                 <Route path="/" element={<Home />} />
                                 <Route path="/dashboard" element={<Dashboard />} />

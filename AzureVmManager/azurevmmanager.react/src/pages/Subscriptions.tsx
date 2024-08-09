@@ -3,6 +3,7 @@ import { MsalAuthenticationTemplate, useMsal } from "@azure/msal-react";
 import DataService from "../services/DataService";
 import { useEffect, useState } from "react";
 import Subscription from "../dataObjects/Subscription";
+import Loading from "../components/Loading";
 
 function Subscriptions() {
     const { instance, accounts } = useMsal();
@@ -22,7 +23,7 @@ function Subscriptions() {
     }, [instance, accounts]);
 
     if (!subscriptions)
-        return <div>Loading...</div>;
+        return <Loading />;
 
     return (
         <MsalAuthenticationTemplate

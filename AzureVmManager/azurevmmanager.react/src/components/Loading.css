@@ -1,0 +1,16 @@
+.loading-container {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.loading-indicator {
+    height: 1.5em;
+    width: 1.5em;
+    padding: 0.5em;
+    animation: rotate-indicator 2s infinite;
+}
+
+@keyframes rotate-indicator {
+    100% {transform: rotate(360deg);}
+}
