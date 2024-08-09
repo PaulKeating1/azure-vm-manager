@@ -6,7 +6,7 @@ export default function SiteHeader() {
 
     const { instance } = useMsal();
 
-    function signIn() {
+    function signIn() {        
         instance.loginRedirect();
     }
 
@@ -15,7 +15,7 @@ export default function SiteHeader() {
     }
 
     return (
-        <div>
+        <div className="site-header-container">
             <header className="site-header">
                 Azure VM Manager
             </header>

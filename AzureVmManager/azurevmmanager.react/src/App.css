@@ -2,5 +2,12 @@
     max-width: 1200px;
     margin: auto;
     font-size: 15px;
-    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.main-content {
+    display: flex;
+    height: 100%;
 }

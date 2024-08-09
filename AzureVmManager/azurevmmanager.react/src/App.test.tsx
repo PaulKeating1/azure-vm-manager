@@ -24,7 +24,7 @@ jest.mock('./components/SiteHeader', () => {
 });
 
 test('App renders site header component', async () => {
-  await msalTester.isNotLogged();
-  const { getByTestId } = await waitFor(() => render(<App pca={msalTester.client} />));
-  expect(getByTestId("SiteHeader")).toBeInTheDocument();
+    await msalTester.isNotLogged();
+    const { getByTestId } = await waitFor(() => render(<App pca={msalTester.client} />));
+    expect(getByTestId("SiteHeader")).toBeInTheDocument();
 });

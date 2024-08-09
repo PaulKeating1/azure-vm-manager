@@ -7,8 +7,9 @@ import {
 } from "react-router-dom";
 import './App.css';
 import SiteHeader from './components/SiteHeader';
-import { MsalProvider } from "@azure/msal-react";
+import { AuthenticatedTemplate, MsalProvider } from "@azure/msal-react";
 import { IPublicClientApplication } from "@azure/msal-browser";
+import AccountNav from './components/AccountNav';
 
 export type AppProps = {
     pca: IPublicClientApplication;
@@ -21,10 +22,17 @@ function App({ pca }: AppProps) {
             <div className="App">
                 <Router>
                     <SiteHeader />
+                    <div className="main-content">
+                        <AuthenticatedTemplate>
+                            <AccountNav />
+                        </AuthenticatedTemplate>        
+                        <main>
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                     </Routes>
+                        </main>
+                    </div>
                 </Router>
             </div>
         </MsalProvider>
