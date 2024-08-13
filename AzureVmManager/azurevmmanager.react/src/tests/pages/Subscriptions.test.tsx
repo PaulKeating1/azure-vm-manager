@@ -1,31 +1,30 @@
-import { useEffect } from 'react';
-import { act, render, waitFor, renderHook } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom'
+import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
+import { createMemoryRouter, MemoryRouter, RouterProvider } from 'react-router-dom'
 import { MsalReactTester } from 'msal-react-tester';
 import { MsalProvider } from '@azure/msal-react';
 import Subscriptions from '../../pages/Subscriptions';
 import Subscription from '../../dataObjects/Subscription';
+import routesConfig from '../../routesConfig';
 
 let msalTester: MsalReactTester;
 
-jest.mock('../../services/DataService', () => ({
-    getSubscriptions: jest.fn(() => {
-        const subscriptions: Subscription[] = [{
-            id: "12345",
-            name: "test 1"
-        },
-        {
-            id: "5432",
-            name: "test 2"
-        }];
-        return subscriptions;
-    })
-}));
-
-jest.mock("react", () => ({
-    ...jest.requireActual("react"),
-    useEffect: jest.fn(),
-  }));
+jest.mock('../../services/DataService', () => {
+    return function() {
+        return {    
+            getSubscriptions: jest.fn(() => {
+            const subscriptions: Subscription[] = [{
+                id: "12345",
+                name: "test 1"
+            },
+            {
+                id: "54321",
+                name: "test 2"
+            }];
+            return subscriptions;
+        })};
+    }
+});
 
 beforeEach(() => {
     // new instance of msal tester for each test:
@@ -41,32 +40,42 @@ afterEach(() => {
     msalTester.resetSpyMsal();
 });
 
-test('Subscriptions component is loading', async () => {    
-    await msalTester.isLogged();
-    const { queryByText } = render(
-        <MsalProvider instance={msalTester.client}>
-            <MemoryRouter>
-                <Subscriptions />
-            </MemoryRouter>
-        </MsalProvider>);
-
-    expect(queryByText("Loading...")).toBeInTheDocument();
-    expect(queryByText("12345")).not.toBeInTheDocument();
-    expect(queryByText("54321")).not.toBeInTheDocument();
-});
-
 test('Subscriptions component loads subscriptions', async () => {    
     await msalTester.isLogged();
-    const { queryByText } = render(
+    const { getByText, queryByText } = render(
         <MsalProvider instance={msalTester.client}>
             <MemoryRouter>
                 <Subscriptions />
             </MemoryRouter>
         </MsalProvider>);
 
-    waitFor(() => {
-        expect(queryByText("12345")).toBeInTheDocument();
-        expect(queryByText("54321")).toBeInTheDocument();
-        expect(queryByText("Loading...")).not.toBeInTheDocument();
+    expect(getByText("Loading...")).toBeInTheDocument();
+
+    await waitFor(() => getByText("12345"));
+
+    expect(getByText("12345")).toBeInTheDocument();
+    expect(getByText("54321")).toBeInTheDocument();
+    expect(queryByText("Loading...")).not.toBeInTheDocument();
+});
+
+test('Clicking on subscription loads resource groups for the subscription', async () => {
+    await msalTester.isLogged();
+    const user = userEvent.setup()
+    const router = createMemoryRouter(routesConfig, {
+        initialEntries: ["/subscriptions"]
+      });
+
+    const { getByText } = render(
+        <MsalProvider instance={msalTester.client}>
+            <RouterProvider router={router} />
+        </MsalProvider>);
+
+    await waitFor(() => getByText("test 1"));
+
+    const subscription = getByText("test 1");
+    user.click(subscription);
+
+    await waitFor(() => {
+        expect(router.state.location.pathname).toEqual('/resource-groups/12345');
     });
 });

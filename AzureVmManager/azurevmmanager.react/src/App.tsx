@@ -1,41 +1,24 @@
-import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
 import {
-    BrowserRouter as Router,
-    Routes,
-    Route
+    RouterProvider,
+    createBrowserRouter
 } from "react-router-dom";
 import './App.css';
-import SiteHeader from './components/SiteHeader';
-import { AuthenticatedTemplate, MsalProvider } from "@azure/msal-react";
+import { MsalProvider } from "@azure/msal-react";
 import { IPublicClientApplication } from "@azure/msal-browser";
-import Subscriptions from './pages/Subscriptions';
-import AccountNav from './components/AccountNav';
+import routesConfig from './routesConfig';
 
 export type AppProps = {
     pca: IPublicClientApplication;
 };
+
+const router = createBrowserRouter(routesConfig);
 
 function App({ pca }: AppProps) {
 
     return (
         <MsalProvider instance={pca}>
             <div className="App">
-                <Router>
-                    <SiteHeader />
-                    <div className="main-layout">
-                        <AuthenticatedTemplate>
-                            <AccountNav />
-                        </AuthenticatedTemplate>        
-                        <main className="main-content">
-                            <Routes>
-                                <Route path="/" element={<Home />} />
-                                <Route path="/dashboard" element={<Dashboard />} />
-                                <Route path="/subscriptions" element={<Subscriptions />} />
-                            </Routes>
-                        </main>
-                    </div>
-                </Router>
+                <RouterProvider router={router}/>
             </div>   
         </MsalProvider>
     );

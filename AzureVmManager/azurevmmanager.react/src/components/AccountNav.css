@@ -3,6 +3,7 @@
     font-size: 1.25em;
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 .account-menu-item {
