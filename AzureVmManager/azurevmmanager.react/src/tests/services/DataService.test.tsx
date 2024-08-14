@@ -51,7 +51,7 @@ test("Get method creates fetch request with correctly formatted URL and access t
     const firstHeaderKey = firstHeader.length > 0 ? firstHeader[0] : null;
     const firstHeaderValue = firstHeader.length > 1 ? firstHeader[1] : null;
 
-    expect(fetchResponse.url).toBe(`api/${url}`);
+    expect(fetchResponse.url).toBe(`${window.location.origin}/api/${url}`);
     expect(firstHeaderKey).toBe("Authorization");
     expect(firstHeaderValue).toBe(`Bearer ${accessToken}`);
 });
@@ -71,4 +71,21 @@ test("GetSubscriptions method returns subscriptions", async () => {
     expect(subscriptions.length).toBe(2);
     expect(subscriptions[0].id).toBe("subscription-id-1");
     expect(subscriptions[1].id).toBe("subscription-id-2");
+});
+
+test("GetResourceGroups method returns resource groups", async () => {
+    const dataService = new DataService(msalTester.client, accountInfo);
+    responseMock.json = jest.fn(() => [{
+        id: "resource-group-id-1",
+        name: "resource-group-name-1"
+    },
+    {
+        id: "resource-group-id-2",
+        name: "resource-group-name-2"
+    }]) as jest.Mock;
+    const resourceGroups = await dataService.getResourceGroups(url);
+
+    expect(resourceGroups.length).toBe(2);
+    expect(resourceGroups[0].id).toBe("resource-group-id-1");
+    expect(resourceGroups[1].id).toBe("resource-group-id-2");
 });

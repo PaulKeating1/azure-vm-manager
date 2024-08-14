@@ -18,6 +18,7 @@ namespace AzureVmManager.Services.Implementations
             var armClient = _armClientFactory.CreateClient();
             var resourceIdentifier = SubscriptionResource.CreateResourceIdentifier(subscriptionId);
             var subscriptionResource = armClient.GetSubscriptionResource(resourceIdentifier);
+            subscriptionResource = subscriptionResource.Get();
             return subscriptionResource;
         }
     }

@@ -1,6 +1,7 @@
 import { AccountInfo, IPublicClientApplication } from "@azure/msal-browser";
 import Subscription from "../dataObjects/Subscription";
 import { scopes } from "../authConfig";
+import ResourceGroup from "../dataObjects/ResourceGroup";
 
 export default class DataService {
     private instance: IPublicClientApplication;
@@ -16,12 +17,17 @@ export default class DataService {
             scopes: scopes,
             account: this.accountInfo,
         });
-        return fetch(`api/${url}`, {
+        return fetch(`${window.location.origin}/api/${url}`, {
             headers: [["Authorization", `Bearer ${accessTokenResponse.accessToken}`]]
         });
     }
 
     async getSubscriptions(url: string): Promise<Subscription[]> {
+        const response = this.get(url);
+        return (await response).json();
+    }
+
+    async getResourceGroups(url: string): Promise<ResourceGroup[]> {
         const response = this.get(url);
         return (await response).json();
     }

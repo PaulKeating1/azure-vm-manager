@@ -13,16 +13,18 @@ jest.mock('../../services/DataService', () => {
     return function() {
         return {    
             getSubscriptions: jest.fn(() => {
-            const subscriptions: Subscription[] = [{
-                id: "12345",
-                name: "test 1"
-            },
-            {
-                id: "54321",
-                name: "test 2"
-            }];
-            return subscriptions;
-        })};
+                const subscriptions: Subscription[] = [{
+                    id: "12345",
+                    name: "test 1"
+                },
+                {
+                    id: "54321",
+                    name: "test 2"
+                }];
+                return subscriptions;
+            }),
+            getResourceGroups: jest.fn(() => {})
+        };
     }
 });
 
@@ -53,7 +55,9 @@ test('Subscriptions component loads subscriptions', async () => {
 
     await waitFor(() => getByText("12345"));
 
+    expect(getByText("test 1")).toBeInTheDocument();
     expect(getByText("12345")).toBeInTheDocument();
+    expect(getByText("test 2")).toBeInTheDocument();
     expect(getByText("54321")).toBeInTheDocument();
     expect(queryByText("Loading...")).not.toBeInTheDocument();
 });
@@ -76,6 +80,6 @@ test('Clicking on subscription loads resource groups for the subscription', asyn
     user.click(subscription);
 
     await waitFor(() => {
-        expect(router.state.location.pathname).toEqual('/resource-groups/12345');
+        expect(router.state.location.pathname).toEqual('/resource-groups/12345');          
     });
 });

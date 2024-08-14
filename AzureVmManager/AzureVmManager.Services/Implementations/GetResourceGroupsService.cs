@@ -21,7 +21,8 @@ namespace AzureVmManager.Services.Implementations
             {
                 Id = x.Data.Id.ToString(),
                 Location = x.Data.Location,
-                Name = x.Data.Name
+                Name = x.Data.Name,
+                SubscriptionName = subscriptionResource.Data.DisplayName
             }).ToList();
             return resourceGroups;
         }

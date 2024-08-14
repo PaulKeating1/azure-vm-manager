@@ -5,6 +5,7 @@ import Subscriptions from './pages/Subscriptions';
 import AccountNav from './components/AccountNav';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import ResourceGroups from "./pages/ResourceGroups";
 
 const routesConfig: RouteObject[] = [{
     path: "/",
@@ -23,7 +24,7 @@ const routesConfig: RouteObject[] = [{
         { path: "/", element: <Home /> },
         { path: "/dashboard", element: <Dashboard /> },
         { path: "/subscriptions", element: <Subscriptions /> },
-        { path: "/resource-groups/:subscriptionId", element: <>Resource Groups</>}
+        { path: "/resource-groups/:subscriptionId", element: <ResourceGroups />}
       ],
 }];
 

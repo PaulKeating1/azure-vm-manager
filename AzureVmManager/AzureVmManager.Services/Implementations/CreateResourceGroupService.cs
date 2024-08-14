@@ -23,7 +23,8 @@ namespace AzureVmManager.Services.Implementations
             {
                 Id = operation.Value.Data.Id.ToString(),
                 Location = operation.Value.Data.Location,
-                Name = operation.Value.Data.Name
+                Name = operation.Value.Data.Name,
+                SubscriptionName = subscriptionResource.Data.DisplayName
             };
             return resourceGroup;
         }

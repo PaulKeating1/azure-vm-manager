@@ -2,7 +2,7 @@ import { InteractionType } from "@azure/msal-browser";
 import { MsalAuthenticationTemplate, useMsal } from "@azure/msal-react";
 import DataService from "../services/DataService";
 import { useEffect, useState } from "react";
-import Subscription from "../dataObjects/Subscription";
+import ResourceGroup from "../dataObjects/ResourceGroup";
 import Loading from "../components/Loading";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
@@ -11,26 +11,27 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper"
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-export default function Subscriptions() {
+export default function ResourceGroups() {
     const { instance, accounts } = useMsal();
-    const [subscriptions, setSubscriptions] = useState<Subscription[]>();
+    const [resourceGoups, setResourceGoups] = useState<ResourceGroup[]>();
+    const { subscriptionId } = useParams();
 
     useEffect(() => {
         const dataService = new DataService(instance, accounts[0]);
-        const getSubscriptions = async () => {
-            const subscriptions = await dataService.getSubscriptions("Subscriptions");
-            setSubscriptions(subscriptions);
+        const getResourceGroups = async () => {
+            const resourceGoups = await dataService.getResourceGroups(`ResourceGroups/${subscriptionId}`);
+            setResourceGoups(resourceGoups);
         };
-        getSubscriptions();
+        getResourceGroups();
 
         return () => {
             // this now gets called when the component unmounts
         };
-    }, [instance, accounts]);
+    }, [instance, accounts, subscriptionId]);
 
-    if (!subscriptions)
+    if (!resourceGoups)
         return <Loading />;
 
     return (
@@ -41,15 +42,17 @@ export default function Subscriptions() {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Subscription name</TableCell>
-                            <TableCell>Subscription ID</TableCell>                        
+                            <TableCell>Name</TableCell>
+                            <TableCell>Subscription</TableCell> 
+                            <TableCell>Location</TableCell>                        
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    {subscriptions.map((subscription) => (
-                        <TableRow key={subscription.id}>
-                            <TableCell><Link to={`/resource-groups/${subscription.id}`}>{subscription.name}</Link></TableCell>
-                            <TableCell>{subscription.id}</TableCell>                        
+                    {resourceGoups.map((resourceGoup) => (
+                        <TableRow key={resourceGoup.id}>
+                            <TableCell>{resourceGoup.name}</TableCell>
+                            <TableCell>{resourceGoup.subscriptionName}</TableCell>
+                            <TableCell>{resourceGoup.location}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>

@@ -19,10 +19,12 @@ namespace AzureVmManager.Services.Tests
             var subscriptionId = Guid.NewGuid().ToString();
             const string location = "uksouth";
             const string resourceGroupName = "test-resource-group";
+            const string subscriptionName = "Test subscription";
 
             var subscriptionResourceMock = new Mock<SubscriptionResource>();
             var getSubscriptionResourceServiceMock = new Mock<IGetSubscriptionResourceService>();
             getSubscriptionResourceServiceMock.Setup(x => x.GetSubscriptionResource(subscriptionId)).Returns(subscriptionResourceMock.Object);
+            subscriptionResourceMock.Setup(x => x.Data).Returns(ResourceManagerModelFactory.SubscriptionData(subscriptionId: subscriptionId, displayName: subscriptionName));
 
             var resourceGroupCollectionMock = new Mock<ResourceGroupCollection>();
             subscriptionResourceMock.Setup(x => x.GetResourceGroups()).Returns(resourceGroupCollectionMock.Object);
@@ -50,6 +52,7 @@ namespace AzureVmManager.Services.Tests
             resourceGroup.Should().NotBeNull();
             resourceGroup.Name.Should().Be(resourceGroupName);
             resourceGroup.Location.Should().Be(location);
+            resourceGroup.SubscriptionName.Should().Be(subscriptionName);
         }
     }
 }

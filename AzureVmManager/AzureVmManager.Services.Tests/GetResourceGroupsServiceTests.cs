@@ -16,16 +16,18 @@ namespace AzureVmManager.Services.Tests
         {
             // Arrange
             var subscriptionId = Guid.NewGuid().ToString();
+            const string location = "uksouth";
             var testResourceGroups = Enumerable.Range(0, numberOfResourceGroups).Select(x =>
             {
                 var mockResourceGroupResource = new Mock<ResourceGroupResource>();
-                var resourceIdentifier = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, "test-resource-group");
-                mockResourceGroupResource.Setup(x => x.Data).Returns(ResourceManagerModelFactory.ResourceGroupData(resourceIdentifier));
+                var resourceIdentifier = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, $"test-resource-group-{x}");
+                mockResourceGroupResource.Setup(x => x.Data).Returns(ResourceManagerModelFactory.ResourceGroupData(resourceIdentifier, $"rg-test={x}", location: location));
                 return mockResourceGroupResource;
             }).ToList();
 
             var subscriptionResourceMock = new Mock<SubscriptionResource>();
-            subscriptionResourceMock.Setup(x => x.Data).Returns(ResourceManagerModelFactory.SubscriptionData(subscriptionId: subscriptionId, displayName: "Test subscription"));
+            const string subscriptionName = "Test subscription";
+            subscriptionResourceMock.Setup(x => x.Data).Returns(ResourceManagerModelFactory.SubscriptionData(subscriptionId: subscriptionId, displayName: subscriptionName));
             var getSubscriptionResourceServiceMock = new Mock<IGetSubscriptionResourceService>();
             getSubscriptionResourceServiceMock.Setup(x => x.GetSubscriptionResource(subscriptionId)).Returns(subscriptionResourceMock.Object);
 
@@ -43,6 +45,17 @@ namespace AzureVmManager.Services.Tests
             // Assert
             resourceGroups.Should().NotBeNull();
             resourceGroups.Count().Should().Be(numberOfResourceGroups);
+            var count = 0;
+
+            foreach (var resourceGroup in resourceGroups)
+            {
+                var resourceIdentifier = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, $"test-resource-group-{count}");
+                resourceGroup.Id.Should().Be(resourceIdentifier);
+                resourceGroup.Name.Should().Be($"rg-test={count}");
+                resourceGroup.Location.Should().Be(location);
+                resourceGroup.SubscriptionName.Should().Be(subscriptionName);
+                count++;
+            }
         }
 
         private IEnumerator<ResourceGroupResource> ResourceGroupCollectionEnumerator(

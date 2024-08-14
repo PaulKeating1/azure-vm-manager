@@ -23,7 +23,7 @@ namespace AzureVmManager.WebApi.Tests
         {
             // Arrange
             var subscriptionId = Guid.NewGuid().ToString();
-            var resourceGroupCollection = Enumerable.Range(0, numberOfResourceGroups).Select(x => new ResourceGroup { Id = "", Name = "", Location = "" });
+            var resourceGroupCollection = Enumerable.Range(0, numberOfResourceGroups).Select(x => new ResourceGroup { Id = "", Name = "", Location = "", SubscriptionName = "" });
             var getResourceGroupsServiceMock = new Mock<IGetResourceGroupsService>();
             getResourceGroupsServiceMock.Setup(x => x.GetResourceGroups(subscriptionId)).Returns(resourceGroupCollection);
             var resourceGroupsController = CreateResourceGroupsController(getResourceGroupsService: getResourceGroupsServiceMock.Object);
@@ -43,6 +43,7 @@ namespace AzureVmManager.WebApi.Tests
             var subscriptionId = Guid.NewGuid().ToString();
             const string location = "uksouth";
             const string resourceGroupName = "test-resource-group";
+            const string subscriptionName = "Test subscription";
 
             var createResourceGroupServiceMock = new Mock<ICreateResourceGroupService>();
             createResourceGroupServiceMock.Setup(x => x.Create(subscriptionId, location, resourceGroupName))
@@ -50,7 +51,8 @@ namespace AzureVmManager.WebApi.Tests
                 {
                     Id = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, resourceGroupName).ToString(),
                     Location = location,
-                    Name = resourceGroupName
+                    Name = resourceGroupName,
+                    SubscriptionName = subscriptionName
                 });
 
             var resourceGroupsController = CreateResourceGroupsController(createResourceGroupService: createResourceGroupServiceMock.Object);
@@ -62,6 +64,7 @@ namespace AzureVmManager.WebApi.Tests
             resourceGroup.Should().NotBeNull();
             resourceGroup.Name.Should().Be(resourceGroupName);
             resourceGroup.Location.Should().Be(location);
+            resourceGroup.SubscriptionName.Should().Be(subscriptionName);
         }
     }
 }

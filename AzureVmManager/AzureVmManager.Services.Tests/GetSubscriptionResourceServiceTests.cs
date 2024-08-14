@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using Azure;
+using Azure.Core;
 using Azure.ResourceManager;
 using Azure.ResourceManager.Models;
 using Azure.ResourceManager.Resources;
@@ -18,8 +19,13 @@ namespace AzureVmManager.Services.Tests
             var subscriptionId = Guid.NewGuid().ToString();
             const string displayName = "Test subscription";
 
+            var subscriptionResourceWithDataMock = new Mock<SubscriptionResource>();
+            var subscriptionData = ResourceManagerModelFactory.SubscriptionData(subscriptionId: subscriptionId, displayName: displayName);
+            subscriptionResourceWithDataMock.Setup(x => x.Data).Returns(subscriptionData);
+            var response = new Mock<Response<SubscriptionResource>>();
+            response.SetupGet(x => x.Value).Returns(subscriptionResourceWithDataMock.Object);
             var subscriptionResourceMock = new Mock<SubscriptionResource>();
-            subscriptionResourceMock.Setup(x => x.Data).Returns(ResourceManagerModelFactory.SubscriptionData(subscriptionId: subscriptionId, displayName: displayName));
+            subscriptionResourceMock.Setup(x => x.Get(default)).Returns(response.Object);
 
             var clientFactoryMock = new Mock<IArmClientFactory>();
             var clientMock = new Mock<ArmClient>();

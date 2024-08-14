@@ -17,7 +17,7 @@ namespace AzureVmManager.WebApi.Controllers
             _createResourceGroupService = createResourceGroupService;
         }
 
-        [HttpGet]
+        [HttpGet, Route("{subscriptionId}")]
         public IEnumerable<ResourceGroup> Get(string subscriptionId)
         {
             var resourceGroups = _getResourceGroupsService.GetResourceGroups(subscriptionId);
