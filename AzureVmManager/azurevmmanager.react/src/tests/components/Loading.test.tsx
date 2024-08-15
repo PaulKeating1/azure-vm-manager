@@ -6,5 +6,5 @@ test("Loading icon and text are displayed", () => {
     expect(queryByText("Loading...")).toBeInTheDocument();
     const icon = container.querySelector("svg");
     expect(icon).toBeInTheDocument();
-    expect(icon).toHaveClass("loading-indicator");
+    expect(icon).toHaveClass("MuiCircularProgress-svg");
 });
