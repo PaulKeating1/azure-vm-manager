@@ -12,23 +12,34 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper"
 import { Link } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 
 export default function Subscriptions() {
     const { instance, accounts } = useMsal();
     const [subscriptions, setSubscriptions] = useState<Subscription[]>();
+    const [erroMessage, setErroMessage] = useState<string>();
 
     useEffect(() => {
         const dataService = new DataService(instance, accounts[0]);
         const getSubscriptions = async () => {
-            const subscriptions = await dataService.getSubscriptions("Subscriptions");
-            setSubscriptions(subscriptions);
+            try {
+                const subscriptions = await dataService.getSubscriptions("Subscriptions");
+                setSubscriptions(subscriptions);
+            } catch (error) {
+                const message = error instanceof Error ? error.message : String(error);
+                setErroMessage(`Error loading subscriptions: ${message}`);
+            }
         };
+
         getSubscriptions();
 
         return () => {
             // this now gets called when the component unmounts
         };
     }, [instance, accounts]);
+
+    if (erroMessage)
+        return <Alert severity="error">{erroMessage}</Alert>
 
     if (!subscriptions)
         return <Loading />;

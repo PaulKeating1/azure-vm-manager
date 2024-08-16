@@ -9,23 +9,15 @@ import routesConfig from '../../routesConfig';
 
 let msalTester: MsalReactTester;
 
+const mockGetSubscriptions = jest.fn();
+
 jest.mock('../../services/DataService', () => {
     return function() {
-        return {    
-            getSubscriptions: jest.fn(() => {
-                const subscriptions: Subscription[] = [{
-                    id: "12345",
-                    name: "test 1"
-                },
-                {
-                    id: "54321",
-                    name: "test 2"
-                }];
-                return subscriptions;
-            }),
+        return {
+            getSubscriptions: mockGetSubscriptions,
             getResourceGroups: jest.fn(() => {})
-        };
-    }
+        };        
+    };
 });
 
 beforeEach(() => {
@@ -42,7 +34,20 @@ afterEach(() => {
     msalTester.resetSpyMsal();
 });
 
+function getSubscriptionsSuccess() {
+    const subscriptions: Subscription[] = [{
+        id: "12345",
+        name: "test 1"
+    },
+    {
+        id: "54321",
+        name: "test 2"
+    }];
+    return subscriptions;
+}
+
 test('Subscriptions component loads subscriptions', async () => {    
+    mockGetSubscriptions.mockImplementationOnce(getSubscriptionsSuccess);    
     await msalTester.isLogged();
     const { getByText, queryByText } = render(
         <MsalProvider instance={msalTester.client}>
@@ -63,6 +68,7 @@ test('Subscriptions component loads subscriptions', async () => {
 });
 
 test('Clicking on subscription loads resource groups for the subscription', async () => {
+    mockGetSubscriptions.mockImplementationOnce(getSubscriptionsSuccess);    
     await msalTester.isLogged();
     const user = userEvent.setup()
     const router = createMemoryRouter(routesConfig, {
@@ -82,4 +88,22 @@ test('Clicking on subscription loads resource groups for the subscription', asyn
     await waitFor(() => {
         expect(router.state.location.pathname).toEqual('/resource-groups/12345');          
     });
+});
+
+test("Error getting subscriptions is handled and error alert displayed", async () => {
+    const apiError = "API error!";
+    mockGetSubscriptions.mockRejectedValueOnce(new Error(apiError));    
+    await msalTester.isLogged();
+    const { getByText, getByRole } = render(
+        <MsalProvider instance={msalTester.client}>
+            <MemoryRouter>
+                <Subscriptions />
+            </MemoryRouter>
+        </MsalProvider>);
+
+    expect(getByText("Loading...")).toBeInTheDocument();
+
+    await waitFor(() => getByRole("alert"));
+
+    expect(getByRole("alert").querySelector("div.MuiAlert-message")?.textContent).toContain(apiError);
 });
