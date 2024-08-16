@@ -7,24 +7,13 @@ import ResourceGroup from '../../dataObjects/ResourceGroup';
 
 let msalTester: MsalReactTester;
 
+const mockGetResourceGroups = jest.fn();
+
 jest.mock('../../services/DataService', () => {
     return function() {
         return {    
-            getResourceGroups: jest.fn(() => {
-            const resourceGroups: ResourceGroup[] = [{
-                id: "12345",
-                name: "rg-test-1",
-                location: "uksouth",
-                subscriptionName: "Test subscription"
-            },
-            {
-                id: "54321",
-                name: "rg-test-2",
-                location: "uksouth",
-                subscriptionName: "Test subscription"
-            }];
-            return resourceGroups;
-        })};
+            getResourceGroups: mockGetResourceGroups
+        };
     }
 });
 
@@ -43,6 +32,21 @@ afterEach(() => {
 });
 
 test('ResourceGroups component loads resource groups', async () => {    
+    mockGetResourceGroups.mockImplementationOnce(() => {
+        const resourceGroups: ResourceGroup[] = [{
+            id: "12345",
+            name: "rg-test-1",
+            location: "uksouth",
+            subscriptionName: "Test subscription"
+        },
+        {
+            id: "54321",
+            name: "rg-test-2",
+            location: "uksouth",
+            subscriptionName: "Test subscription"
+        }];
+        return resourceGroups;
+    });
     await msalTester.isLogged();
     const { getByText, queryByText, getAllByText } = render(
         <MsalProvider instance={msalTester.client}>
@@ -60,4 +64,22 @@ test('ResourceGroups component loads resource groups', async () => {
     expect(getAllByText("uksouth").length).toBe(2);
     expect(getAllByText("Test subscription").length).toBe(2);
     expect(queryByText("Loading...")).not.toBeInTheDocument();
+});
+
+test("Error getting resource groups is handled and error alert displayed", async () => {
+    const apiError = "API error!";
+    mockGetResourceGroups.mockRejectedValueOnce(new Error(apiError));    
+    await msalTester.isLogged();
+    const { getByText, getByRole } = render(
+        <MsalProvider instance={msalTester.client}>
+            <MemoryRouter>
+                <ResourceGroups />
+            </MemoryRouter>
+        </MsalProvider>);
+
+    expect(getByText("Loading...")).toBeInTheDocument();
+
+    await waitFor(() => getByRole("alert"));
+
+    expect(getByRole("alert").querySelector("div.MuiAlert-message")?.textContent).toContain(apiError);
 });

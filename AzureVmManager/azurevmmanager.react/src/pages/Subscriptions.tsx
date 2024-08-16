@@ -17,7 +17,7 @@ import Alert from "@mui/material/Alert";
 export default function Subscriptions() {
     const { instance, accounts } = useMsal();
     const [subscriptions, setSubscriptions] = useState<Subscription[]>();
-    const [erroMessage, setErroMessage] = useState<string>();
+    const [erroMessage, setErrorMessage] = useState<string>();
 
     useEffect(() => {
         const dataService = new DataService(instance, accounts[0]);
@@ -27,7 +27,7 @@ export default function Subscriptions() {
                 setSubscriptions(subscriptions);
             } catch (error) {
                 const message = error instanceof Error ? error.message : String(error);
-                setErroMessage(`Error loading subscriptions: ${message}`);
+                setErrorMessage(`Error loading subscriptions: ${message}`);
             }
         };
 
