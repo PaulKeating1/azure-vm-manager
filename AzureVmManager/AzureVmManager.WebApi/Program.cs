@@ -1,5 +1,5 @@
 using AzureVmManager.Services.Implementations;
-using MailMe8.Server.Filters;
+using AzureVmManager.WebApi.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 
@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(x =>
 {
     x.Filters.Add<UserActionFilter>();
+    x.Filters.Add<ExceptionFilter>();
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

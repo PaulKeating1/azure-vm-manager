@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Identity.Web;
 using System.Security.Claims;
 
-namespace MailMe8.Server.Filters
+namespace AzureVmManager.WebApi.Filters
 {
     public class UserActionFilter : IAsyncActionFilter
     {
