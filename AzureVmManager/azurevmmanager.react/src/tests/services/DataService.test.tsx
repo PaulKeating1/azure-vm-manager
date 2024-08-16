@@ -14,6 +14,8 @@ const accountInfo: AccountInfo = {
     localAccountId: ""
 };
 
+const mockGetOk = jest.fn();
+
 beforeEach(() => {
     global.fetch = jest.fn((requestUrl, options) =>{
         Object.defineProperty(responseMock, 'url', {
@@ -21,6 +23,9 @@ beforeEach(() => {
         });
         Object.defineProperty(responseMock, 'headers', {
             get: () => options.headers
+        });
+        Object.defineProperty(responseMock, 'ok', {
+            get: mockGetOk
         });
         return Promise.resolve<Response>(responseMock);
     }) as jest.Mock;    
@@ -45,6 +50,7 @@ beforeEach(() => {
 
 test("Get method creates fetch request with correctly formatted URL and access token in authorization header", async () => {
     const dataService = new DataService(msalTester.client, accountInfo);
+    mockGetOk.mockImplementationOnce(() => true);
     const fetchResponse = await dataService.get(url);
     const headers = (fetchResponse.headers as unknown) as [[]];
     const firstHeader = headers[0] as Array<string>;
@@ -56,8 +62,29 @@ test("Get method creates fetch request with correctly formatted URL and access t
     expect(firstHeaderValue).toBe(`Bearer ${accessToken}`);
 });
 
+test("Get method throws error when fetch request is unsuccessful", async () => {
+    const dataService = new DataService(msalTester.client, accountInfo);
+    mockGetOk.mockImplementationOnce(() => false);
+    const errorMessage = "API error!";
+    responseMock.text = jest.fn(() => errorMessage) as jest.Mock;
+    let fetchResponse;
+    let errorThrown;
+
+    try {
+        fetchResponse = await dataService.get(url);
+    } catch (error) {
+        errorThrown = error;
+    }
+
+    expect(fetchResponse).toBeFalsy();
+    expect(errorThrown instanceof Error).toBeTruthy();
+    errorThrown = errorThrown as Error;
+    expect(errorThrown.message).toBe(errorMessage);
+});
+
 test("GetSubscriptions method returns subscriptions", async () => {
     const dataService = new DataService(msalTester.client, accountInfo);
+    mockGetOk.mockImplementationOnce(() => true);
     responseMock.json = jest.fn(() => [{
         id: "subscription-id-1",
         name: "subscription-name-1"
@@ -75,6 +102,7 @@ test("GetSubscriptions method returns subscriptions", async () => {
 
 test("GetResourceGroups method returns resource groups", async () => {
     const dataService = new DataService(msalTester.client, accountInfo);
+    mockGetOk.mockImplementationOnce(() => true);
     responseMock.json = jest.fn(() => [{
         id: "resource-group-id-1",
         name: "resource-group-name-1"

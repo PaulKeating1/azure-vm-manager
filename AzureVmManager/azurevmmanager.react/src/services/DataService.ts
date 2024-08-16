@@ -17,18 +17,21 @@ export default class DataService {
             scopes: scopes,
             account: this.accountInfo,
         });
-        return fetch(`${window.location.origin}/api/${url}`, {
+        const response = await fetch(`${window.location.origin}/api/${url}`, {
             headers: [["Authorization", `Bearer ${accessTokenResponse.accessToken}`]]
         });
+        if (response.ok)
+            return response;
+        throw new Error(await response.text());
     }
 
     async getSubscriptions(url: string): Promise<Subscription[]> {
-        const response = this.get(url);
-        return (await response).json();
+        const response = await this.get(url);
+        return response.json();
     }
 
     async getResourceGroups(url: string): Promise<ResourceGroup[]> {
-        const response = this.get(url);
-        return (await response).json();
+        const response = await this.get(url);
+        return response.json();
     }
 }
