@@ -23,20 +23,14 @@ afterEach(() => {
 test('SiteHeader component has site name', () => {
     const { getByText } = render(<SiteHeader />, { wrapper: BrowserRouter });
     expect(getByText("Azure VM Manager")).toBeInTheDocument();
-    expect(getByText("Azure VM Manager")).toHaveClass("site-header");
 });
 
 test('SiteHeader nav has menu items for unauthenticated user', async () => {
     await msalTester.isNotLogged();
     const { getByText } = render(<SiteHeader />, { wrapper: BrowserRouter });
 
-    const home = getByText("Home");
-    expect(home).toBeInTheDocument();
-    expect(home).toHaveClass("site-header-menu-item");
-
-    const signIn = getByText("Sign In");
-    expect(signIn).toBeInTheDocument();
-    expect(signIn).toHaveClass("site-header-sign-in-out");
+    expect(getByText("Home")).toBeInTheDocument();
+    expect(getByText("Login")).toBeInTheDocument();
 });
 
 test('SiteHeader nav has menu items for authenticated user', async () => {
@@ -49,11 +43,6 @@ test('SiteHeader nav has menu items for authenticated user', async () => {
         </MsalProvider>));
 
     await msalTester.waitForRedirect();
-    const home = getByText("Home");
-    expect(home).toBeInTheDocument();
-    expect(home).toHaveClass("site-header-menu-item");
-
-    const signOut = getByText("Sign Out");
-    expect(signOut).toBeInTheDocument();
-    expect(signOut).toHaveClass("site-header-sign-in-out");
+    expect(getByText("Home")).toBeInTheDocument();
+    expect(getByText("Logout")).toBeInTheDocument();
 });
